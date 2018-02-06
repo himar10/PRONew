@@ -110,11 +110,37 @@ public class Practicas {
 		
 		
 		
+	//Crear fichero con Objetos de la clase vehiculo
 		
+	public static void grabarObjetoClaseVehiculo(String fichero) {
+		Vehiculo v1 = new Vehiculo();
+		ArrayList<Vehiculo> listaVehiculo2 = Practicas.leerFicheroVehiculoArrayList();
 		
+		try {
+			ObjectOutputStream fObj = new ObjectOutputStream(new FileOutputStream(fichero));
+			
+			//guardar los objetos estudiantes en el fichero...
+			fObj.writeObject(listaVehiculo2);
+			/*fObj.writeObject(est1);
+			fObj.writeObject(est2);
+			fObj.writeObject(est3);*/
+			fObj.close();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Fichero no encontrado");
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error IO");
+			e.printStackTrace();
+		}
+		System.out.println("Fin del método");
 		
+	
+	}
 		
-	//
+	
 		
 	// Grabar Objetos en fichero
 		
