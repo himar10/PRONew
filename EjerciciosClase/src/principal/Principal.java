@@ -162,7 +162,7 @@ public class Principal {
 		//Practicas.grabarObjetoEnFichero("ficheros/estudiantes.obj");
 		//Practicas.leerFicheroObjetoEstudiante("ficheros/estudiantes.obj");
 		ArrayList <Vehiculo> resultado = Practicas.leerFicheroVehiculoArrayList();
-		System.out.println(resultado);
+	
 		System.out.println("FIN 2");
 	}
 

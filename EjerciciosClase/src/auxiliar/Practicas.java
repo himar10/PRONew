@@ -79,13 +79,14 @@ public class Practicas {
 				while ((linea = br.readLine()) != null) {
 					
 					String[] campos = linea.split("%");
-					
-					LocalDate fechaMat2;
-					Vehiculo v1= new Vehiculo(Integer.parseInt(campos[0]), campos[1], 
-							campos[2], LocalDate.parse(campos[3]), Float.parseFloat(campos[4])); 
-			
 					DateTimeFormatter fechaMat1 = DateTimeFormatter.ofPattern("yyyyMMdd");
-					fechaMat2 = LocalDate.parse(campos[3], fechaMat1);
+					
+					LocalDate fechaMat2 = LocalDate.parse(campos[3], fechaMat1);
+					Vehiculo v1= new Vehiculo(Integer.parseInt(campos[0]), campos[1], 
+							campos[2], fechaMat2, Float.parseFloat(campos[4])); 
+			
+				
+					
 					listaVehiculo.add(v1);
 					System.out.println(v1.getFechaMatricula());
 				
