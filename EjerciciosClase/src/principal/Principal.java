@@ -161,8 +161,12 @@ public class Principal {
 		Practicas practicas = new Practicas();
 		//Practicas.grabarObjetoEnFichero("ficheros/estudiantes.obj");
 		//Practicas.leerFicheroObjetoEstudiante("ficheros/estudiantes.obj");
-		ArrayList <Vehiculo> resultado = Practicas.leerFicheroVehiculoArrayList();
-		Practicas.grabarObjetoClaseVehiculo("ficheros/vehiculos2.obj");
+		//ArrayList <Vehiculo> resultado = Practicas.leerFicheroVehiculoArrayList();
+		//Practicas.grabarObjetoClaseVehiculo("ficheros/vehiculos2.obj");
+		
+		//practicas.leerFicheroTextoVisitantesIsla();
+		practicas.imprimirHashmap();
+		
 		System.out.println("FIN 2");
 	}
 

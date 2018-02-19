@@ -62,6 +62,55 @@ public class Practicas {
 		*/
 		
 		
+		//Practica leer fichero visitantesIsla 19/02/2018
+		
+		
+		public HashMap<Integer, ArrayList<Float>> leerFicheroTextoVisitantesIsla() {
+			HashMap<Integer, ArrayList<Float>> resultado = new HashMap<Integer, ArrayList<Float>>();
+			ArrayList <Float> listaVisitante = new ArrayList<Float>();
+			try {
+				// Abrir el fichero
+				FileReader fr = new FileReader("ficheros/visitantesIsla.txt");
+				BufferedReader br = new BufferedReader(fr);
+				String linea;
+				// System.out.println(LocalDate.now());
+				// Leer el fichero linea a linea
+				while ((linea = br.readLine()) != null) {
+
+					String[] campos = linea.split("@");
+					int numIsla = Integer.parseInt(campos[0]);
+					float mesIsla = Float.parseFloat(campos[1]);
+					float numVisitantes = Float.parseFloat(campos[2]);
+					listaVisitante.add(0, mesIsla);
+					listaVisitante.add(1, numVisitantes);
+					resultado.put(numIsla, listaVisitante);
+					//System.out.println(resultado);
+				}
+				fr.close();
+				br.close();
+			} catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+			return resultado;
+		}
+		
+		
+		public void imprimirHashmap(){
+			HashMap<Integer, ArrayList<Float>> resultado = leerFicheroTextoVisitantesIsla();
+			Set<Integer> claves = resultado.keySet();
+			int contador = 0;
+			for (Integer clave : claves) {
+				System.out.println(resultado.get(clave).get(contador));
+				contador++;
+			}
+				
+		}
+			
+		
+		
+		
 		//Practica repaso 5 Febrero 2018
 		
 		
