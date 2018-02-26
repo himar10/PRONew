@@ -16,6 +16,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -63,28 +64,33 @@ public class Practicas {
 		
 		
 		//Practica leer fichero visitantesIsla 19/02/2018
-		
-		
-		public HashMap<Integer, ArrayList<Float>> leerFicheroTextoVisitantesIsla() {
+		public void inicializaVisitantesIsla(HashMap<Integer, ArrayList<Float>> resultado) {
+			ArrayList<Float> visitantesMeses;
+			for (int isla = 0; isla < 7; isla++) { // recorre cada isla
+				visitantesMeses = new ArrayList<Float>();
+				for (int mes = 0; mes < 12; mes++) // poner a 0 cada uno de los meses
+					visitantesMeses.add(0f);
+				resultado.put(isla, visitantesMeses);
+			}
+		}
+
+		public HashMap<Integer, ArrayList<Float>> visitantesIslaMes(String rutaFicheroVisitantes) {
 			HashMap<Integer, ArrayList<Float>> resultado = new HashMap<Integer, ArrayList<Float>>();
-			ArrayList <Float> listaVisitante = new ArrayList<Float>();
 			try {
 				// Abrir el fichero
-				FileReader fr = new FileReader("ficheros/visitantesIsla.txt");
+				FileReader fr = new FileReader(rutaFicheroVisitantes);
 				BufferedReader br = new BufferedReader(fr);
 				String linea;
-				// System.out.println(LocalDate.now());
+				inicializaVisitantesIsla(resultado);
 				// Leer el fichero linea a linea
 				while ((linea = br.readLine()) != null) {
 
 					String[] campos = linea.split("@");
-					int numIsla = Integer.parseInt(campos[0]);
-					float mesIsla = Float.parseFloat(campos[1]);
-					float numVisitantes = Float.parseFloat(campos[2]);
-					listaVisitante.add(0, mesIsla);
-					listaVisitante.add(1, numVisitantes);
-					resultado.put(numIsla, listaVisitante);
-					//System.out.println(resultado);
+					int isla = Integer.parseInt(campos[0]);
+					int mes = Integer.parseInt(campos[1]);
+					float numeroVisitantes = Float.parseFloat(campos[2]);
+					resultado.get(isla - 1).set(mes - 1, numeroVisitantes);
+
 				}
 				fr.close();
 				br.close();
@@ -95,19 +101,42 @@ public class Practicas {
 			}
 			return resultado;
 		}
-		
-		
-		public void imprimirHashmap(){
-			HashMap<Integer, ArrayList<Float>> resultado = leerFicheroTextoVisitantesIsla();
-			Set<Integer> claves = resultado.keySet();
-			int contador = 0;
-			for (Integer clave : claves) {
-				System.out.println(resultado.get(clave).get(contador));
-				contador++;
+
+		public void listadoIslasMeses(String rutaFicheroVisitantes) {
+			ArrayList<Float> visitantesIsla;
+			HashMap<Integer, ArrayList<Float>> hm = visitantesIslaMes(rutaFicheroVisitantes);
+
+			String[] islas = { "GRAN CANARIA", "LANZAROTE", "FUERTEVENTURA", "TENERIFE", "LA PALMA", "LA GOMERA",
+					"EL HIERRO" };
+			String[] meses = { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIE",
+					"OCTUBRE", "NOVIEM", "DICIEMBRE" };
+
+			// recorrer hm
+			float acumuladoMes[] = new float[12];
+			Set<Integer> claves = hm.keySet();
+			System.out.print("\t\t");
+			for (int i = 0; i < meses.length; i++) {
+				System.out.print(meses[i] + "\t");
 			}
-				
+			System.out.println();
+			for (Integer clave : claves) {
+				// islas[clave]
+				visitantesIsla = hm.get(clave);
+				System.out.print(islas[clave] + "\t");
+				float acumuladoIsla = 0f;
+				for (int i=0;i<visitantesIsla.size();i++) {
+					acumuladoIsla += visitantesIsla.get(i);
+					acumuladoMes[i] += visitantesIsla.get(i);
+					System.out.printf("%.0f\t", visitantesIsla.get(i) * 1000);
+				}
+				System.out.print("\t total visitantes " + islas[clave] + " = " + acumuladoIsla);
+				System.out.println();
+			}
+			for (Float valor : acumuladoMes) {
+				System.out.print("\t\t" + valor);
+			}
 		}
-			
+	
 		
 		
 		

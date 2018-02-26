@@ -165,8 +165,7 @@ public class Principal {
 		//Practicas.grabarObjetoClaseVehiculo("ficheros/vehiculos2.obj");
 		
 		//practicas.leerFicheroTextoVisitantesIsla();
-		practicas.imprimirHashmap();
-		
+//		/practicas.imprimirHashmap();
 		System.out.println("FIN 2");
 	}
 
