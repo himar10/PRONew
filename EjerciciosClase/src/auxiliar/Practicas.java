@@ -1,6 +1,7 @@
 package auxiliar;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -61,6 +62,181 @@ public class Practicas {
 			}
 		}
 		*/
+		
+		
+		
+		//Practica copia estudiante a objeto 27/02/2018
+		
+		/*public Estudiante crearEstudianteLeido(String[] campos){
+			int grupo = Integer.parseInt(campos[0]);
+			Estudiante estudiante = new Estudiante(grupo);
+			estudiante.setNif(campos[1]);
+			estudiante.setSexo(campos[3].charAt(0));
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+			LocalDate fechaNac = LocalDate.parse(campos[4], fmt);
+			estudiante.setFecha(fechaNac);
+			estudiante.setAltura(Integer.parseInt(campos[5]));
+			estudiante.setMadre(null);
+			estudiante.setPadre(null);
+			return estudiante;
+			
+		}
+		
+		//Practica copia estudiante txt a objeto 27/02/2018
+		
+		public void copiaEstudiantestxtAObjetos(String ficheroEntrada, String ficheroSalida) {
+			try {
+				// Abrir el fichero
+				FileReader fr = new FileReader(ficheroEntrada);
+				BufferedReader br = new BufferedReader(fr);
+				FileOutputStream fIs = new FileOutputStream(ficheroSalida);
+				ObjectOutputStream fObj = new ObjectOutputStream(fIs);
+				String linea;// Leer el fichero linea a linea
+				while ((linea = br.readLine()) != null) {
+					String[] campos = linea.split("#");
+					//crar estudiante a partir del registro leido
+					Estudiante estudiante = crearEstudianteLeido(campos);
+					//grabar objeto estudiante en fichero
+					fObj.writeObject(estudiante);
+				}
+				fObj.close();
+				fIs.close();
+				fr.close();
+				br.close();
+			} catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}	
+		}*/
+		
+		
+		//01/03/2018 Comunidades y provicias ficheros
+		
+		public String[] ficheroComunidadesArray() {
+			String[] comunidades = new String[19];
+			try {
+				// Abrir el fichero
+				FileReader fr = new FileReader("ficheros/comunidades.txt");
+				BufferedReader br = new BufferedReader(fr);
+				String linea;
+				int contador = 0;
+				// System.out.println(LocalDate.now());
+				// Leer el fichero linea a linea
+				while ((linea = br.readLine()) != null) {
+				
+					String[] campos = linea.split("%");
+						comunidades[contador] = campos[1];
+						contador++;
+					}
+				fr.close();
+				br.close();
+			} catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+			return comunidades;
+			
+		}
+		
+		
+		
+		public HashMap<String, ArrayList<String>> generarDatosListadoProvincias() {
+			HashMap<String, ArrayList<String>> resultado = new HashMap<String, ArrayList<String>>();
+			ArrayList<String> AL = new ArrayList<String>();
+			String[] comunidades = ficheroComunidadesArray();
+			try {
+
+				// Abrir el fichero
+				FileReader fr = new FileReader("ficheros/provincias.txt");
+				BufferedReader br = new BufferedReader(fr);
+				String linea;
+				int contador = 0;
+				while ((linea = br.readLine()) != null) {
+						
+						String[] campos = linea.split("%");
+						int idComunidad = Integer.parseInt(campos[2]);
+						String prov = campos[1];
+						String padron = campos[3];
+						
+						if(resultado.get(comunidades[idComunidad - 1]) == null ) {
+							resultado.put(comunidades[contador], AL);
+						}
+						resultado.get(comunidades[idComunidad-1]).add(campos[1]+ "#" + campos[3]);
+						
+						contador++;
+					}
+
+				fr.close();
+				br.close();
+			} catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+			return resultado;
+		}
+		
+		public void listadoProvinciasPorCA(HashMap<String, ArrayList<String>> resultado) {
+			// recorrer hm de entrada creando el de salida
+			Set<String> comunidades = resultado.keySet();
+			for (String comunidad : comunidades) {
+				ArrayList<String> listaProvincias = resultado.get(comunidad);
+				int acumuladoCA = 0;
+				System.out.println("Comunidad Autonoma: " + comunidad);
+				for (String provincia : listaProvincias) {
+					System.out.println(provincia.split("#")[0] + ", " + provincia.split("#")[1]);
+					acumuladoCA+= Integer.parseInt(provincia.split("#")[1]);
+				}
+				System.out.println("Total Padron Comunidad Autonoma: " + comunidad + "= " + acumuladoCA);
+			}
+			
+		}
+		
+		
+		// copia estudiante obj a txt
+		
+		public void copiaEstudiantesObjATxt(String rutaObj, String rutaTxt) {
+			try {
+				// Abrir el fichero
+				FileInputStream fIs = new FileInputStream(rutaObj);
+				ObjectInputStream fObj = new ObjectInputStream(fIs);
+				FileWriter fw2 = new FileWriter(rutaTxt);
+				BufferedWriter fw = new BufferedWriter(fw2);
+				//recorrer el fichero
+				String linea;
+				while(fIs.available() > 0) {
+					Estudiante est = null;
+					est = (Estudiante) fObj.readObject();
+					//est = (Estudiante) fObj.readObject(); //hay que hacer casting de objeto estudiante (conversion)
+					//hay que hacer casting de objeto estudiante (conversion)
+					linea = est.getCodGrupo()+ "#" +est.getNif()+ "#" + est.getNombre() + "#" +est.getSexo()+ "#" +est.getFecha()+ "#" + est.getAltura();
+					//System.out.println(linea);
+					fw2.write(linea+"\n");
+					
+				}
+				fw.close();
+				fw2.close();
+				fIs.close();
+				fObj.close();	
+				
+				
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				System.out.println("fichero no encontrado");
+			} catch (IOException e) {
+				System.out.println("Error IO");
+			}
+		}
+		
+		
+		
+		
+		//Leer Objeto y crear fichero
+		
 		
 		
 		//Practica leer fichero visitantesIsla 19/02/2018
@@ -254,7 +430,7 @@ public class Practicas {
 		
 	}
 		//leer fichero creado del Objeto estudiante
-	public static void leerFicheroObjetoEstudiante(String fichero) {
+	public static void leerFicheroObjetoEstudianteDesdeFichero(String fichero) {
 		try {
 			// Abrir el fichero
 			FileInputStream fIs = new FileInputStream(fichero);
@@ -264,9 +440,9 @@ public class Practicas {
 			Estudiante est = null;
 			ArrayList<Estudiante> listaE = null;
 			while(fIs.available() > 0) {
-				est = (Estudiante) fObj.readObject(); //hay que hacer casting de objeto estudiante (conversion)
+				//est = (Estudiante) fObj.readObject(); //hay que hacer casting de objeto estudiante (conversion)
 				listaE = (ArrayList<Estudiante>) fObj.readObject();
-				System.out.println(est.getNombre());
+				//System.out.println(est.getNombre());
 			}
 			fIs.close();
 			fObj.close();	
@@ -473,6 +649,42 @@ public class Practicas {
 				System.out.println(calculaEdad(campos[2]));
 
 			}
+			fr.close();
+			br.close();
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public void leerFicheroTextoOrdenadoClave(String rutaFichero) {
+		try {
+			// Abrir el fichero
+			FileReader fr = new FileReader(rutaFichero);
+			BufferedReader br = new BufferedReader(fr);
+			String codigo_leido, codigo_anterior = null;
+			int contador_grupo = 0;
+			int contador_total = 0;
+			String linea;
+			// Leer el fichero linea a linea
+			while ((linea = br.readLine()) != null) {
+				String[] campos = linea.split("&&");
+				codigo_leido = campos[0];
+				if (codigo_anterior == null) // primer registro
+					codigo_anterior = codigo_leido;
+				if (!codigo_leido.equals(codigo_anterior)) {
+					System.out.println("Hay " + contador_grupo + " alumnos en el grupo " + codigo_anterior);
+					contador_total += contador_grupo;
+					contador_grupo = 0;
+					codigo_anterior = codigo_leido;
+				}
+               contador_grupo ++;
+			}
+			System.out.println("Hay " + contador_grupo + " alumnos en el grupo " + codigo_anterior);//esta instruccion es porque no muestra el ultimo registro
+			contador_total += contador_grupo;//cuenta el ultimo
+			System.out.println("Hay " + contador_total + " alumnos en total");//muestra el total
+			contador_total += contador_grupo;
 			fr.close();
 			br.close();
 		} catch (FileNotFoundException e) {
@@ -976,4 +1188,7 @@ public class Practicas {
 			}
 		}
 	}
+
+
+
 }

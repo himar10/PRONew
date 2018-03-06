@@ -166,6 +166,9 @@ public class Principal {
 		
 		//practicas.leerFicheroTextoVisitantesIsla();
 //		/practicas.imprimirHashmap();
+		//practicas.copiaEstudiantestxtAObjetos("ficheros/estudiantes.txt", "ficheros/estudiantes.obj");
+		practicas.generarDatosListadoProvincias();
+		practicas.copiaEstudiantesObjATxt("ficheros/estudiantes.obj", "ficheros/estudiantes2.txt");
 		System.out.println("FIN 2");
 	}
 
